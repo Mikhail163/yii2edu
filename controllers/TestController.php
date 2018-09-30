@@ -9,7 +9,7 @@ class TestController extends Controller
 {
     public function actionIndex()
     {
-    	return \Yii::$app->test->run();
+    	//return \Yii::$app->test->run();
     	
     	$model = new Product([
     			'name' => 'Тестовый продукт', 
