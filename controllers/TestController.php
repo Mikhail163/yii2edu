@@ -7,14 +7,15 @@ use app\models\Product;
 
 class TestController extends Controller
 {
- 
     public function actionIndex()
     {
-    	$model = new Product();
+    	return \Yii::$app->test->run();
     	
-    	$model->name = 'Тестовый продукт';
-    	$model->price = 1900;
-    	$model->id = 1989767;
+    	$model = new Product([
+    			'name' => 'Тестовый продукт', 
+    			'price' => 1900, 
+    			'id' => 1989767
+    	]);
     	
         return $this->render('index', [
         		'title' => 'Тестовая страница',
