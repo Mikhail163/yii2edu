@@ -18,8 +18,9 @@ class ProductSearch extends Product
     public function rules()
     {
         return [
-            [['id', 'created_at'], 'integer'],
-            [['name', 'price'], 'safe'],
+            [['product_id', 'brend_id', 'meta_id', 'lenght', 'height', 'width', 'weight', 'display', 'visible', 'for_sale', 'replace_product_id', 'show_description', 'watermark', 'quantity', 'yamt_category', 'type_id'], 'integer'],
+            [['name', 'articul', 'offer', 'h1', 'title', 'description', 'keywords', 'seo_description', 'thumbnail', 'model', 'yamt_description'], 'safe'],
+            [['price', 'discounted_price', 'purchase_cost'], 'number'],
         ];
     }
 
@@ -59,12 +60,38 @@ class ProductSearch extends Product
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'created_at' => $this->created_at,
+            'product_id' => $this->product_id,
+            'brend_id' => $this->brend_id,
+            'meta_id' => $this->meta_id,
+            'lenght' => $this->lenght,
+            'height' => $this->height,
+            'width' => $this->width,
+            'weight' => $this->weight,
+            'price' => $this->price,
+            'discounted_price' => $this->discounted_price,
+            'display' => $this->display,
+            'visible' => $this->visible,
+            'for_sale' => $this->for_sale,
+            'replace_product_id' => $this->replace_product_id,
+            'show_description' => $this->show_description,
+            'watermark' => $this->watermark,
+            'quantity' => $this->quantity,
+            'purchase_cost' => $this->purchase_cost,
+            'yamt_category' => $this->yamt_category,
+            'type_id' => $this->type_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'price', $this->price]);
+            ->andFilterWhere(['like', 'articul', $this->articul])
+            ->andFilterWhere(['like', 'offer', $this->offer])
+            ->andFilterWhere(['like', 'h1', $this->h1])
+            ->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'keywords', $this->keywords])
+            ->andFilterWhere(['like', 'seo_description', $this->seo_description])
+            ->andFilterWhere(['like', 'thumbnail', $this->thumbnail])
+            ->andFilterWhere(['like', 'model', $this->model])
+            ->andFilterWhere(['like', 'yamt_description', $this->yamt_description]);
 
         return $dataProvider;
     }

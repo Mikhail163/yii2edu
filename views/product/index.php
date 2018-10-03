@@ -26,19 +26,55 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            'product_id',
+            'brend_id',
+            //'meta_id',
+            //'lenght',
+            //'height',
+            //'width',
+            //'weight',
+            'name',
+            //'articul',
+            //'offer',
+            //'h1',
+            //'title',
         	[
-        		'attribute' => 'name',
-        		'format' => 'html'
-            ],
-            [
-            	'attribute' => 'price',
-            	'contentOptions' => ['class' => 'small'],
-            	'value' => function(app\models\Product $model) {
-    					return "{$model->price} руб";
-    				}
-			],
-            'created_at:datetime:Cоздан',
+        		'attribute' => 'description',
+        		'format' => 'html',
+        	],
+            //'description:ntext',
+            //'keywords',
+            //'seo_description',
+        	[
+        		'attribute' => 'price',
+        		'contentOptions' => ['class' => 'small'],
+        		'format' => 'html',
+        		'value' => function(app\models\Product $model) {
+        			
+        			if ($model->price <= $model->discounted_price ||
+        				$model->discounted_price == 0) {
+        				return "{$model->price} руб";
+        			}
+        			else {
+        				$old_price = Html::tag('span', Html::encode($model->price), ['class' => 'old-price']);
+        				return $old_price .' '.$model->discounted_price . "руб";
+        			}	
+        		}
+        	],
+            //'discounted_price',
+            //'thumbnail',
+            //'display',
+            //'visible',
+            //'for_sale',
+            //'replace_product_id',
+            //'show_description',
+            //'watermark',
+            //'quantity',
+            //'purchase_cost',
+            //'yamt_category',
+            //'model',
+            //'yamt_description',
+            //'type_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -14,7 +14,7 @@ class TestController extends Controller
     	$model = new Product([
     			'name' => 'Тестовый продукт', 
     			'price' => 1900, 
-    			'id' => 1989767
+    			'product_id' => 1989767
     	]);
     	
         return $this->render('index', [

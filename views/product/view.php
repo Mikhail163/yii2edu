@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Update', ['update', 'id' => $model->product_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id' => $model->product_id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -28,16 +28,36 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            [
-            	'attribute' => 'name',
-            	'value' => Html::tag('b', $model->name),
-            	'format' => 'html',
-            	'contentOptions' => ['class' => 'small'],
-            	'captionOptions' => ['class' => 'small']
-            ],
+            'product_id',
+            'brend_id',
+            'meta_id',
+            'lenght',
+            'height',
+            'width',
+            'weight',
+            'name',
+            'articul',
+            'offer',
+            'h1',
+            'title',
+            'description:ntext',
+            'keywords',
+            'seo_description',
             'price',
-            'created_at:datetime',
+            'discounted_price',
+            'thumbnail',
+            'display',
+            'visible',
+            'for_sale',
+            'replace_product_id',
+            'show_description',
+            'watermark',
+            'quantity',
+            'purchase_cost',
+            'yamt_category',
+            'model',
+            'yamt_description',
+            'type_id',
         ],
     ]) ?>
 
