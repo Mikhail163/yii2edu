@@ -66,6 +66,8 @@ class ProductController extends Controller
     {
         $model = new Product();
 
+        $model->scenario = Product::SCENARIO_CREATE;
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->product_id]);
         }
@@ -86,6 +88,8 @@ class ProductController extends Controller
     {
         $model = $this->findModel($id);
 
+        $model->scenario = Product::SCENARIO_UPDATE;
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->product_id]);
         }

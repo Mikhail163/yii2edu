@@ -51,11 +51,13 @@ use Yii;
 
 /**
  * 
- * Структура запроса sql для товара находится в app\config\product.sql
+ * Структура запроса sql для товаров находится в app\config\product.sql
  *
  */
 class Product extends \yii\db\ActiveRecord
 {
+	const SCENARIO_CREATE = 'create';
+	const SCENARIO_UPDATE = 'update';
     /**
      * {@inheritdoc}
      */
@@ -64,22 +66,97 @@ class Product extends \yii\db\ActiveRecord
         return 'product';
     }
 
+    public function scenarios() {
+    	return [
+    			self::SCENARIO_CREATE => [
+    					'brend_id',
+    					'meta_id',
+    					'lenght',
+    					'height',
+    					'width',
+    					'weight',
+    					'name',
+    					'articul',
+    					'offer',
+    					'h1',
+    					'title',
+    					'description',
+    					'keywords',
+    					'seo_description',
+    					'price',
+    					'discounted_price',
+    					'thumbnail',
+    					'display',
+    					'visible',
+    					'for_sale',
+    					'replace_product_id',
+    					'show_description',
+    					'watermark',
+    					'quantity',
+    					'purchase_cost',
+    					'yamt_category',
+    					'model',
+    					'yamt_description',
+    					'type_id',
+    			],
+    			self::SCENARIO_UPDATE => [
+    					'brend_id',
+    					'!meta_id',
+    					'lenght',
+    					'height',
+    					'width',
+    					'weight',
+    					'name',
+    					'articul',
+    					'offer',
+    					'h1',
+    					'title',
+    					'description',
+    					'keywords',
+    					'seo_description',
+    					'price',
+    					'discounted_price',
+    					'thumbnail',
+    					'display',
+    					'visible',
+    					'for_sale',
+    					'replace_product_id',
+    					'show_description',
+    					'watermark',
+    					'quantity',
+    					'purchase_cost',
+    					'yamt_category',
+    					'model',
+    					'yamt_description',
+    					'type_id',
+    			],
+    	];
+    }
+    
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['brend_id', 'meta_id', 'lenght', 'height', 'width', 'weight', 'name', 'articul', 'offer', 'h1', 'title', 'description', 'keywords', 'seo_description', 'price', 'model'], 'required'],
+            [['brend_id', 'meta_id', 'lenght', 'height', 'width', 'weight', 'name', 'h1', 'title', 'description', 'keywords', 'seo_description', 'price'], 'required'],
             [['brend_id', 'meta_id', 'lenght', 'height', 'width', 'weight', 'display', 'visible', 'for_sale', 'replace_product_id', 'show_description', 'watermark', 'quantity', 'yamt_category', 'type_id'], 'integer'],
             [['description'], 'string'],
-            [['price', 'discounted_price', 'purchase_cost'], 'number'],
-            [['name', 'offer', 'h1', 'image_6', 'image_7', 'image_8', 'image_9', 'image_10'], 'string', 'max' => 100],
-            [['articul'], 'string', 'max' => 22],
-            [['title', 'keywords', 'seo_description'], 'string', 'max' => 255],
-            [['image', 'image_2', 'image_3', 'image_4', 'image_5', 'thumbnail'], 'string', 'max' => 150],
-            [['model'], 'string', 'max' => 50],
+        	// поставим ограничение на цену от 0 до 1 000 000 рублей 
+            	
+            [['offer', 'h1'], 'string', 'max' => 100, 'min' => 0],
+        	[['name'], 'string', 'max' => 100],
+        	// уберем лишние пробелы и очистим от html тегов name
+        	[['name'], 'filter', 'filter' => function($value) {
+        		return strip_tags(trim($value));
+        	}],
+        	[['articul', 'offer'], 'string', 'max' => 22, 'min' => 0],
+            [['title', 'keywords', 'seo_description'], 'string', 'max' => 255, 'min' => 0],
+            [['thumbnail'], 'string', 'max' => 150, 'min' => 0],
+            [['model'], 'string', 'max' => 50, 'min' => 0],
             [['yamt_description'], 'string', 'max' => 175],
+            [['display', 'visible', 'for_sale', 'show_description'], 'default',  'value' => 1],
+            [['replace_product_id', 'watermark', 'quantity'], 'default',  'value' => 0],
         ];
     }
 

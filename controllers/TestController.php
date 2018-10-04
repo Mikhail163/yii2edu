@@ -11,11 +11,15 @@ class TestController extends Controller
     {
     	//return \Yii::$app->test->run();
     	
-    	$model = new Product([
+    	$model = new Product(/*[
     			'name' => 'Тестовый продукт', 
     			'price' => 1900, 
     			'product_id' => 1989767
-    	]);
+    	]*/);
+    	
+    	$model->attributes = [ 'name' => 'Тестовый продукт', 'price' => 1900, 'product_id' => 1989767 ];
+    	
+    	//$model->scenario = 'create';
     	
         return $this->render('index', [
         		'title' => 'Тестовая страница',
