@@ -24,16 +24,6 @@ use Yii;
  * @property string $seo_description
  * @property string $price
  * @property string $discounted_price
- * @property string $image
- * @property string $image_2
- * @property string $image_3
- * @property string $image_4
- * @property string $image_5
- * @property string $image_6
- * @property string $image_7
- * @property string $image_8
- * @property string $image_9
- * @property string $image_10
  * @property string $thumbnail
  * @property int $display
  * @property int $visible
