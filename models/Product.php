@@ -130,10 +130,11 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['brend_id', 'meta_id', 'lenght', 'height', 'width', 'weight', 'name', 'h1', 'title', 'description', 'keywords', 'seo_description', 'price'], 'required'],
-            [['brend_id', 'meta_id', 'lenght', 'height', 'width', 'weight', 'display', 'visible', 'for_sale', 'replace_product_id', 'show_description', 'watermark', 'quantity', 'yamt_category', 'type_id'], 'integer'],
+            [['brend_id', 'meta_id', 'display', 'visible', 'for_sale', 'replace_product_id', 'show_description', 'watermark', 'quantity', 'yamt_category', 'type_id'], 'integer'],
             [['description'], 'string'],
-        	// поставим ограничение на цену от 0 до 1 000 000 рублей 
-            	
+        	[['lenght', 'height', 'width', 'weight'], 'number'],
+        	// поставим ограничение на цену от 0 до 10 000 000 рублей 
+        	[['price', 'discounted_price'], 'number', 'max' => 10000000, 'min' => 0],
             [['offer', 'h1'], 'string', 'max' => 100, 'min' => 0],
         	[['name'], 'string', 'max' => 100],
         	// уберем лишние пробелы и очистим от html тегов name
@@ -145,8 +146,10 @@ class Product extends \yii\db\ActiveRecord
             [['thumbnail'], 'string', 'max' => 150, 'min' => 0],
             [['model'], 'string', 'max' => 50, 'min' => 0],
             [['yamt_description'], 'string', 'max' => 175],
-            [['display', 'visible', 'for_sale', 'show_description'], 'default',  'value' => 1],
-            [['replace_product_id', 'watermark', 'quantity'], 'default',  'value' => 0],
+            [['display', 'visible', 'for_sale', 'show_description'], 'default',  'value' => '1'],
+            [['replace_product_id', 'watermark', 'quantity'], 'default',  'value' => '0'],
+            [['display', 'visible', 'for_sale', 'show_description'], 'in', 'range' => [0, 1]],
+            [['replace_product_id', 'watermark', 'quantity'], 'in', 'range' => [0, 1]],
         ];
     }
 
