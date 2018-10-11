@@ -30,8 +30,8 @@ class m181008_130541_add_user extends Migration
 				'password_hash' => $this->string(255)->notNull(),
 				'access_token' => $this->string(255)->notNull(),
 				'creator_id' => $this->integer()->notNull(),
-				'created_at' => $this->integer()->null(),
-				'creator_id' => $this->integer()->notNull(),
+				'updater_id' => $this->integer()->null(),
+				'created_at' => $this->integer()->notNull(),
 				'updated_at' => $this->integer()->null(),
 		]);
     }
