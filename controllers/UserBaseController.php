@@ -8,6 +8,8 @@ use app\models\search\UserBaseSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Task;
+use app\models\TaskUser;
 
 /**
  * UserBaseController implements the CRUD actions for UserBase model.
@@ -29,6 +31,28 @@ class UserBaseController extends Controller
         ];
     }
 
+    /**
+     * Учебный класс тест.
+     * @return mixed
+     */
+    public function actionTest()
+    {
+    	// Создаем новый объект User
+    	$model = new UserBase();   	
+    	$model->load(
+    		[
+    			'username' => 'тестовый пользователь',
+    			'password_hash' => 'hash',
+    			'access_token' => 'token',
+    			'creator_id' => 0,
+    			'created_at' => time(),
+    		]
+    	);
+    	$model->save();
+    	
+    	
+    }
+    
     /**
      * Lists all UserBase models.
      * @return mixed
