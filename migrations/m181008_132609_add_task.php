@@ -27,7 +27,7 @@ class m181008_132609_add_task extends Migration
     			'description' => $this->string(255)->notNull(),
     			'creator_id' => $this->integer()->notNull(),
     			'created_at' => $this->integer()->null(),
-    			'creator_id' => $this->integer()->notNull(),
+    			'updater_id' => $this->integer()->notNull(),
     			'updated_at' => $this->integer()->null(),
     	]);
     }
