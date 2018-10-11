@@ -3,8 +3,6 @@
 namespace app\controllers;
 
 use yii\web\Controller;
-use app\models\Product;
-use yii\helpers\VarDumper;
 
 class User {
 	public $name;
