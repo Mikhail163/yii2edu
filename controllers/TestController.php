@@ -11,11 +11,14 @@ class TestController extends Controller
     {
 
     	
-    	$result = \Yii::$app->db->createCommand()->batchInsert('user', ['user_name', 'password_hash', 'access_token', 'creator_id', 'created_at'], 
-    			[
-    					['Вася', '', '', 0, time()],
-    					['Катя', '', '', 0, time()],
-    			]);
+    	$result = \Yii::$app->db->createCommand()
+    		->batchInsert('user', 
+    				['user_name', 'password_hash', 'access_token', 'creator_id', 'created_at'], 
+	    			[
+	    					['Вася', 'hash', 'token', 0, time()],
+	    					['Катя', 'hash', 'token', 0, time()],
+	    			]
+    	);
     	
     	return $result;
 
