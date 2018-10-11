@@ -50,7 +50,19 @@ class UserBaseController extends Controller
     	);
     	$model->save();
     	
+    	/*
+    	 * Прочитать из базы все записи из User применив жадную подгрузку 
+    	 * связанных данных из Task, с запросами без JOIN.
+    	 */
     	
+    	$models = Task::find()->with(UserBase::RELATION_USERS_CREATED)->all();
+    	
+    	
+    	
+    	/*
+         * Прочитать из базы все записи из User применив жадную подгрузку 
+         * связанных данных из Task, с запросом содержащим JOIN.
+    	 */
     }
     
     /**
