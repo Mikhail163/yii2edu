@@ -55,13 +55,6 @@ class TestController extends Controller
 {
     public function actionIndex()
     {
-
-    	/*
-    	$id = 5000;
-    	$result = \Yii::$app->db
-    		->createCommand('SELECT * FROM {{product}} WHERE product_id > :id', ['id' => $id])
-    			->queryAll();
-    	*/
     	
     	$users[0] = new User('Вася');
     	$users[1] = new User('Катя');
@@ -75,26 +68,13 @@ class TestController extends Controller
     		array_push($usersArray4insert, $user->valForMultiInsert());
     	}
     	
-    	//var_dump(User::rowNameForInsert());
+    	var_dump(User::rowNameForInsert());
     	var_dump($usersArray4insert);
     	
-    	//$result = \Yii::$app->db->createCommand()->batchInsert('user', ['user_name', 'password_hash', 'access_token', 'creator_id', 'created_at'], $usersArray4insert);
-    	
-    	$result = '';
+    	$result = \Yii::$app->db->createCommand()->batchInsert('user', ['user_name', 'password_hash', 'access_token', 'creator_id', 'created_at'], $usersArray4insert);
     	
     	return $result;
-    	/*
-    	$model = new Product();
-    	
-    	$model->attributes = [ 'name' => 'Тестовый продукт', 'price' => 1900, 'product_id' => 1989767 ];
-    	
-    	
-        return $this->render('index', [
-        		'title' => 'Тестовая страница',
-        		'content' => 'Выполняем задание к уроку 1 курс yii2 базовый',
-        		'model' => $model,
-        ]);
-        */
+
     }
 
 }
