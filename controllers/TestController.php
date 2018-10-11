@@ -15,9 +15,14 @@ class User {
 	public $updatedAt;
 	
 	public function __construct(
-			$userName, $passwordHash = 'empty_hash', 
-			$accessToken = 'empty_token', $creatorId = 0, 
-			$createdAt = 0, $updatedAt = NULL) {
+			$userName, 
+			$passwordHash = 'empty_hash', 
+			$accessToken = 'empty_token', 
+			$creatorId = 0, 
+			$createdAt = 0, 
+			$updatedAt = NULL
+			) {
+		
 		$this->name = $userName;
 		$this->passwordHash = $passwordHash;
 		$this->accessToken = $accessToken;
@@ -55,12 +60,13 @@ class TestController extends Controller
 {
     public function actionIndex()
     {
+    	$users = [];
     	
-    	$users[0] = new User('Вася');
-    	$users[1] = new User('Катя');
-    	$users[2] = new User('Марина');
-    	$users[3] = new User('Сережа');
-    	$users[4] = new User('Вика');
+    	array_push($users, new User('Вася'));
+    	array_push($users, new User('Катя'));
+    	array_push($users, new User('Марина'));
+    	array_push($users, new User('Сережа'));
+    	array_push($users, new User('Вика'));
     	
     	$usersArray4insert = [];
     	
@@ -71,7 +77,7 @@ class TestController extends Controller
     	var_dump(User::rowNameForInsert());
     	var_dump($usersArray4insert);
     	
-    	$result = \Yii::$app->db->createCommand()->batchInsert('user', ['user_name', 'password_hash', 'access_token', 'creator_id', 'created_at'], $usersArray4insert);
+    	$result = \Yii::$app->db->createCommand()->batchInsert('user', User::rowNameForInsert(), $usersArray4insert);
     	
     	return $result;
 
