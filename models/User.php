@@ -16,8 +16,8 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property Task[] $tasks
- * @property Task[] $tasks0
+ * @property Task[] $tasksCreated
+ * @property Task[] $tasksUpdated
  * @property TaskUser[] $taskUsers
  */
 class User extends \yii\db\ActiveRecord
@@ -62,7 +62,7 @@ class User extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTasks()
+    public function getTasksCreated()
     {
         return $this->hasMany(Task::className(), ['creator_id' => 'user_id']);
     }
@@ -70,7 +70,7 @@ class User extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTasks0()
+    public function getTasksUpdated()
     {
         return $this->hasMany(Task::className(), ['updater_id' => 'user_id']);
     }

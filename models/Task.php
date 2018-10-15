@@ -38,8 +38,8 @@ class Task extends \yii\db\ActiveRecord
             [['title', 'description', 'creator_id', 'created_at'], 'required'],
             [['creator_id', 'updater_id', 'created_at', 'updated_at'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],
-            [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserBase::className(), 'targetAttribute' => ['creator_id' => 'user_id']],
-            [['updater_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserBase::className(), 'targetAttribute' => ['updater_id' => 'user_id']],
+            [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['creator_id' => 'user_id']],
+            [['updater_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updater_id' => 'user_id']],
         ];
     }
 
