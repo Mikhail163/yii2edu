@@ -91,7 +91,7 @@ class User extends \yii\db\ActiveRecord
     {
         //ini_set('memory_limit', '1024M');
     	//return 0;
-    	return $this->hasMany(Task::className(), ['id' => 'task_id'])
+    	return $this->hasMany(Task::className(), ['task_id' => 'task_id'])
     		->via(self::RELATION_TASKS_USERS);
     }
 
