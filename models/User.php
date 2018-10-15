@@ -25,7 +25,7 @@ class User extends \yii\db\ActiveRecord
 {
 	const RELATION_TASKS_CREATED = 'tasksCreated';
 	const RELATION_TASKS_UPDATED = 'tasksUpdated';
-	const RELATION_TASKS_USERS = 'sharedTasks';
+	const RELATION_TASKS_USERS = 'taskUsers';
     /**
      * {@inheritdoc}
      */

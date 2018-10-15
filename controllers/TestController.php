@@ -34,7 +34,7 @@ class TestController extends Controller
     	//$models = User::find()->joinWith(User::RELATION_TASKS_CREATED)->all();
     	//$result = $models[0]->tasksCreated[0]->updater;
     	
-    	$result = $model->SharedTasks;
+    	$result = $model->sharedTasks;
     	
     	return $this->render('index', [
     			'result' => $result,
