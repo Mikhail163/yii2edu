@@ -2,93 +2,103 @@
 
 namespace app\models;
 
-use Yii;
-
-/**
- * This is the model class for table "user".
- *
- * @property int $user_id
- * @property string $username Настоящие имя пользователя
- * @property string $password_hash
- * @property string $access_token
- * @property int $creator_id
- * @property int $updater_id
- * @property int $created_at
- * @property int $updated_at
- *
- * @property Task[] $tasks
- * @property Task[] $tasks0
- * @property TaskUser[] $taskUsers
- */
-class UserBase extends \yii\db\ActiveRecord
+class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
-    {
-        return 'user';
-    }
+    public $id;
+    public $username;
+    public $password;
+    public $authKey;
+    public $accessToken;
+
+    private static $users = [
+        '100' => [
+            'id' => '100',
+            'username' => 'admin',
+            'password' => 'admin',
+            'authKey' => 'test100key',
+            'accessToken' => '100-token',
+        ],
+        '101' => [
+            'id' => '101',
+            'username' => 'demo',
+            'password' => 'demo',
+            'authKey' => 'test101key',
+            'accessToken' => '101-token',
+        ],
+    ];
+
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public static function findIdentity($id)
     {
-        return [
-            [['username', 'password_hash', 'access_token', 'creator_id', 'created_at'], 'required'],
-            [['creator_id', 'updater_id', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'password_hash', 'access_token'], 'string', 'max' => 255],
-        ];
+        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public static function findIdentityByAccessToken($token, $type = null)
     {
-        return [
-            'user_id' => 'User ID',
-            'username' => 'Username',
-            'password_hash' => 'Password Hash',
-            'access_token' => 'Access Token',
-            'creator_id' => 'Creator ID',
-            'updater_id' => 'Updater ID',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-        ];
+        foreach (self::$users as $user) {
+            if ($user['accessToken'] === $token) {
+                return new static($user);
+            }
+        }
+
+        return null;
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Finds user by username
+     *
+     * @param string $username
+     * @return static|null
      */
-    public function getTasks()
+    public static function findByUsername($username)
     {
-        return $this->hasMany(Task::className(), ['creator_id' => 'user_id']);
-    }
+        foreach (self::$users as $user) {
+            if (strcasecmp($user['username'], $username) === 0) {
+                return new static($user);
+            }
+        }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTasks0()
-    {
-        return $this->hasMany(Task::className(), ['updater_id' => 'user_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTaskUsers()
-    {
-        return $this->hasMany(TaskUser::className(), ['user_id' => 'user_id']);
+        return null;
     }
 
     /**
      * {@inheritdoc}
-     * @return UserQuery the active query used by this AR class.
      */
-    public static function find()
+    public function getId()
     {
-        return new UserQuery(get_called_class());
+        return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthKey()
+    {
+        return $this->authKey;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->authKey === $authKey;
+    }
+
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return $this->password === $password;
     }
 }

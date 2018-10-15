@@ -3,18 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\UserBase;
-use app\models\search\UserBaseSearch;
+use app\models\User;
+use app\models\search\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\Task;
-use app\models\TaskUser;
 
 /**
- * UserBaseController implements the CRUD actions for UserBase model.
+ * UserController implements the CRUD actions for User model.
  */
-class UserBaseController extends Controller
+class UserController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -32,46 +30,12 @@ class UserBaseController extends Controller
     }
 
     /**
-     * Учебный класс тест.
-     * @return mixed
-     */
-    public function actionTest()
-    {
-    	// Создаем новый объект User
-    	$model = new UserBase();   	
-    	$model->load(
-    		[
-    			'username' => 'тестовый пользователь',
-    			'password_hash' => 'hash',
-    			'access_token' => 'token',
-    			'creator_id' => 0,
-    			'created_at' => time(),
-    		]
-    	);
-    	$model->save();
-    	
-    	/*
-    	 * Прочитать из базы все записи из User применив жадную подгрузку 
-    	 * связанных данных из Task, с запросами без JOIN.
-    	 */
-    	
-    	$models = Task::find()->with(UserBase::RELATION_USERS_CREATED)->all();
-    	
-    	/*
-         * Прочитать из базы все записи из User применив жадную подгрузку 
-         * связанных данных из Task, с запросом содержащим JOIN.
-    	 */
-    	
-    	
-    }
-    
-    /**
-     * Lists all UserBase models.
+     * Lists all User models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserBaseSearch();
+        $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -81,7 +45,7 @@ class UserBaseController extends Controller
     }
 
     /**
-     * Displays a single UserBase model.
+     * Displays a single User model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -94,13 +58,13 @@ class UserBaseController extends Controller
     }
 
     /**
-     * Creates a new UserBase model.
+     * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new UserBase();
+        $model = new User();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->user_id]);
@@ -112,7 +76,7 @@ class UserBaseController extends Controller
     }
 
     /**
-     * Updates an existing UserBase model.
+     * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -132,7 +96,7 @@ class UserBaseController extends Controller
     }
 
     /**
-     * Deletes an existing UserBase model.
+     * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -146,15 +110,15 @@ class UserBaseController extends Controller
     }
 
     /**
-     * Finds the UserBase model based on its primary key value.
+     * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return UserBase the loaded model
+     * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = UserBase::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         }
 
