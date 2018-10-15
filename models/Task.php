@@ -28,6 +28,13 @@ class Task extends \yii\db\ActiveRecord
     {
         return 'task';
     }
+    
+    /*
+     * Метод для переопределения базы
+    public static function getDb() {
+    	return $otherConnection;
+    }
+    */
 
     /**
      * {@inheritdoc}

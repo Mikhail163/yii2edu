@@ -19,9 +19,13 @@ use Yii;
  * @property Task[] $tasksCreated
  * @property Task[] $tasksUpdated
  * @property TaskUser[] $taskUsers
+ * @property Task[] $sharedTasks
  */
 class User extends \yii\db\ActiveRecord
 {
+	const RELATION_TASKS_CREATED = 'tasksCreated';
+	const RELATION_TASKS_UPDATED = 'tasksUpdated';
+	const RELATION_TASKS_USERS = 'sharedTasks';
     /**
      * {@inheritdoc}
      */
@@ -80,7 +84,15 @@ class User extends \yii\db\ActiveRecord
      */
     public function getTaskUsers()
     {
-        return $this->hasMany(TaskUser::className(), ['user_id' => 'user_id']);
+    	return $this->hasMany(TaskUser::className(), ['user_id' => 'user_id']);
+    }
+    
+    public function getSharedTasks() 
+    {
+        //ini_set('memory_limit', '1024M');
+    	//return 0;
+    	return $this->hasMany(Task::className(), ['id' => 'task_id'])
+    		->via(self::RELATION_TASKS_USERS);
     }
 
     /**
