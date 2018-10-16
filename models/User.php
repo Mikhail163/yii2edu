@@ -24,7 +24,7 @@ use yii\behaviors\BlameableBehavior;
  * @property Task[] $sharedTasks
  * @mixin TimestampBehavior
  */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
 	const RELATION_TASKS_CREATED = 'tasksCreated';
 	const RELATION_TASKS_UPDATED = 'tasksUpdated';
@@ -121,5 +121,31 @@ class User extends \yii\db\ActiveRecord
     public static function find()
     {
         return new UserQuery(get_called_class());
+    }
+    
+    /**
+     * Finds user by username
+     *
+     * @param string $username
+     * @return static|null
+     */
+    public static function findByUsername($username)
+    {
+    	return User::findOne(['username' => $username]);
+    }
+    
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+    	return 
+    		Yii::$app->getSecurity()->validatePassword(
+    			$password,
+    			$this->password_hash
+    	    );
     }
 }
