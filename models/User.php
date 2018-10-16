@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 
 /**
  * This is the model class for table "user".
@@ -20,18 +22,35 @@ use Yii;
  * @property Task[] $tasksUpdated
  * @property TaskUser[] $taskUsers
  * @property Task[] $sharedTasks
+ * @mixin TimestampBehavior
  */
 class User extends \yii\db\ActiveRecord
 {
 	const RELATION_TASKS_CREATED = 'tasksCreated';
 	const RELATION_TASKS_UPDATED = 'tasksUpdated';
 	const RELATION_TASKS_USERS = 'taskUsers';
+	const RELATION_TASKS_SHARED = 'sharedTasks';
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'user';
+    }
+    
+    public function behaviors()
+    {
+    	return [
+    			[
+    					'class' => TimestampBehavior::class,
+    					'updatedAtAttribute' => false,
+    			],
+    			[
+    					'class' => BlameableBehavior::class,
+    					'createdByAttribute' => 'creator_id',
+    					'updatedByAttribute' => 'updater_id',
+    			],
+    	];
     }
 
     /**
@@ -40,9 +59,9 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'password_hash', 'access_token', 'creator_id', 'created_at'], 'required'],
+            [['username', 'name', 'password_hash'], 'required'],
             [['creator_id', 'updater_id', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'password_hash', 'access_token'], 'string', 'max' => 255],
+            [['username', 'name', 'password_hash', 'access_token'], 'string', 'max' => 255],
         ];
     }
 
@@ -67,7 +86,7 @@ class User extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getTasksCreated()
-    {
+    { 
         return $this->hasMany(Task::className(), ['creator_id' => 'user_id']);
     }
 

@@ -23,9 +23,12 @@ class m181011_085753_add_foreign_key_user_task extends Migration
      */
     public function safeDown()
     {
-        echo "m181011_085753_add_foreign_key_user_task cannot be reverted.\n";
+    	$this->dropForeignKey('fx_taskuser_user', 'user');
+    	$this->dropForeignKey('fx_taskuser_task', 'task');
+    	$this->dropForeignKey('fx_task_user1', 'user');
+    	$this->dropForeignKey('fx_task_user2', 'user');
 
-        return false;
+        return true;
     }
 
     /*
