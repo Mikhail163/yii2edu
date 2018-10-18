@@ -27,6 +27,7 @@ use yii\behaviors\BlameableBehavior;
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
 	public $password;
+	public $password2;
 	
 	const RELATION_TASKS_CREATED = 'tasksCreated';
 	const RELATION_TASKS_UPDATED = 'tasksUpdated';
@@ -61,7 +62,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'name', 'password'], 'required'],
+            [['username', 'name', 'password', 'password2'], 'required'],
+        	['password2', 'compare', 'compareAttribute' => 'password', 'message' => "Пароли не совпадают"],
             [['creator_id', 'updater_id', 'created_at', 'updated_at'], 'integer'],
             [['username', 'name', 'password', 'access_token'], 'string', 'max' => 255],
         ];
@@ -81,6 +83,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'updater_id' => 'Updater ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+        	'password' => 'Пароль',
+        	'password2' => 'Повторите ввод пароля',
         ];
     }
 
@@ -168,6 +172,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     	if (!parent::beforeSave($insert)) {
     		return false;
     	}
+    	
+    	if ($this->password !== $this->password2)
+    		return false;
     	
     	if($insert) {
     		// новая модель
