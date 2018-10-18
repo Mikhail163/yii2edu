@@ -28,7 +28,7 @@ class m181008_130541_add_user extends Migration
 				'user_id' => $this->primaryKey(),
 				'username' => $this->string(255)->notNull()->comment('Настоящие имя пользователя'),
 				'password_hash' => $this->string(255)->notNull(),
-				'access_token' => $this->string(255)->notNull(),
+				'access_token' => $this->string(255)->null(),
 				'creator_id' => $this->integer()->notNull(),
 				'updater_id' => $this->integer()->null(),
 				'created_at' => $this->integer()->notNull(),
