@@ -51,9 +51,9 @@ class UserController extends Controller
     	 * Еще один способ ограничить права доступа на странице 
     	 * всем пользователям, кроме третьего
     	 */
-    	if (Yii::$app->user->id != 3) {
+    	/*if (Yii::$app->user->id != 3) {
     		throw new ForbiddenHttpException('Не хватает прав доступа');
-    	}
+    	}*/
     	
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

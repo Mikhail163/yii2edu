@@ -64,6 +64,16 @@ class TaskUser extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['user_id' => 'user_id']);
     }
+    
+    public static function getUserTasks($userId) {
+    	
+    	if (!$userId && !is_numeric($userId)) {
+    		return false;
+    	}
+    	
+    	return $this->hasMany(self::className(), ['user_id' => $userId]);
+    	
+    }
 
     /**
      * {@inheritdoc}

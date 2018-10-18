@@ -112,6 +112,15 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     	return $this->hasMany(TaskUser::className(), ['user_id' => 'user_id']);
     }
     
+    public function getAccessedTasks($user_id) {
+    	
+    	if (!$user_id) {
+    		$user_id = $this->user_id;
+    	}
+    	
+    	return TaskUser::getUserTasks($user_id);
+    }
+    
     public function getSharedTasks() 
     {
         //ini_set('memory_limit', '1024M');
