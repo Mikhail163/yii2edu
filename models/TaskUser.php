@@ -67,11 +67,12 @@ class TaskUser extends \yii\db\ActiveRecord
     
     public static function getUserTasks($userId) {
     	
-    	if (!$userId && !is_numeric($userId)) {
+    	if (!$userId) {
     		return false;
     	}
     	
-    	return $this->hasMany(self::className(), ['user_id' => $userId]);
+    	return self::find()
+    		->where([ 'user_id' => $userId ])->all();
     	
     }
 

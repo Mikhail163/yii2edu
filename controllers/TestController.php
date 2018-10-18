@@ -5,6 +5,7 @@ namespace app\controllers;
 use yii\web\Controller;
 use app\models\User;
 use app\models\Task;
+use app\models\TaskUser;
 
 class TestController extends Controller
 {
@@ -36,8 +37,8 @@ class TestController extends Controller
 	
     public function actionIndex()
     {
-    	
-    	$result = $this->updateUser();	
+    	$model = new TaskUser();
+    	$result = $model->getUserTasks(1);	
 
     	return $this->render('index', [
     			'result' => $result,
