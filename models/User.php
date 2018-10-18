@@ -48,11 +48,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     					'class' => TimestampBehavior::class,
     					'updatedAtAttribute' => false,
     			],
-    			/*[
+    			[
     					'class' => BlameableBehavior::class,
     					'createdByAttribute' => 'creator_id',
     					'updatedByAttribute' => 'updater_id',
-    			],*/
+    			],
     	];
     }
 
@@ -62,10 +62,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'name', 'password', 'password2'], 'required'],
+        	[['username', 'name', 'password', 'password2'], 'required'],
         	['password2', 'compare', 'compareAttribute' => 'password', 'message' => "Пароли не совпадают"],
             [['creator_id', 'updater_id', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'name', 'password', 'access_token'], 'string', 'max' => 255],
+        	[['username', 'name', 'password', 'password2', 'access_token'], 'string', 'max' => 255],
         ];
     }
 

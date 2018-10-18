@@ -7,26 +7,38 @@ use app\models\User;
 use app\models\search\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\web\ForbiddenHttpException;
 
 /**
  * UserController implements the CRUD actions for User model.
  */
 class UserController extends Controller
 {
+    
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
+    	return [
+    			'access' => [
+    					'class' => AccessControl::className(),
+    					'rules' => [
+    							[
+    									'allow' => true,
+    									'roles' => ['@'],
+    							],
+    					],
+    			],
+    			'verbs' => [
+    					'class' => VerbFilter::className(),
+    					'actions' => [
+    							'logout' => ['post'],
+    					],
+    			],
+    	];
     }
 
     /**
@@ -35,6 +47,14 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
+    	/**
+    	 * Еще один способ ограничить права доступа на странице 
+    	 * всем пользователям, кроме третьего
+    	 */
+    	if (Yii::$app->user->id != 3) {
+    		throw new ForbiddenHttpException('Не хватает прав доступа');
+    	}
+    	
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -65,7 +85,6 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
-        $model->creator_id = 1;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->user_id]);
