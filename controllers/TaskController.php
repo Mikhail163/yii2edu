@@ -43,6 +43,21 @@ class TaskController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    public function actionMy()
+    {
+    	$searchModel = new TaskSearch();
+    	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    	
+    	/** @var $query TaskQuery */
+    	$query = $dataProvider->query;
+    	$query->byCreator(Yii::$app->user->id);
+    	
+    	return $this->render('my', [
+    			'searchModel' => $searchModel,
+    			'dataProvider' => $dataProvider,
+    	]);
+    }
 
     /**
      * Displays a single Task model.

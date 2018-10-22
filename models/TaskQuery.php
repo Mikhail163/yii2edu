@@ -13,6 +13,11 @@ class TaskQuery extends \yii\db\ActiveQuery
     {
         return $this->andWhere('[[status]]=1');
     }*/
+	
+	public function byCreator($userId) 
+	{
+		return $this->andWhere(['creator_id' => $userId]);
+	}
 
     /**
      * {@inheritdoc}

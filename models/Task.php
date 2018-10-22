@@ -89,6 +89,27 @@ class Task extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TaskUser::className(), ['task_id' => 'task_id']);
     }
+    
+    public static function getTaskUsersId($taskId)
+    {
+    	$result = self::find()
+	    	->select('user_id')
+	    	->from('task_user')
+	    	->where(['=', 'task_id', $taskId])
+	    	->all();
+    	
+	    $userId = [];
+	    
+	    
+	    foreach ($result as $u) {
+	    	echo '<br>';
+	    	var_dump($u);
+	    	//array_push($userId, $u['user_id']);
+	    }
+	    exit();	
+	    return $userId;
+    	
+    }
 
     /**
      * {@inheritdoc}

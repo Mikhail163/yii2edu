@@ -4,10 +4,13 @@ namespace app\controllers;
 
 use Yii;
 use app\models\TaskUser;
+use app\models\Task;
+use app\models\User;
 use app\models\search\TaskUser as TaskUserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\ForbiddenHttpException;
 
 /**
  * TaskUserController implements the CRUD actions for TaskUser model.
@@ -62,16 +65,32 @@ class TaskUserController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($taskId)
     {
+    	$task = Task::findOne($taskId);
+    	
+    	if (!$task || $task->creator_id != Yii::$app->user->id) {
+    		throw new ForbiddenHttpException();
+    	}
+    	
         $model = new TaskUser();
+        $model->task_id = $taskId;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->task_user_id]);
+            return $this->redirect(['task/my']);
         }
+        
+        $users = User::find()
+        	->select('username')
+        	->andWhere('not in', 'user_id',  Task::getTaskUsersId($taskId))
+        	->andWhere(['<>', 'user_id', Yii::$app->user->id])
+        	->indexBy('user_id')
+        	->column();
+    
 
         return $this->render('create', [
             'model' => $model,
+        	'users' => $users,
         ]);
     }
 
