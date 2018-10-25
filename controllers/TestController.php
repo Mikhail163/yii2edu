@@ -6,6 +6,7 @@ use yii\web\Controller;
 use app\models\User;
 use app\models\Task;
 use app\models\TaskUser;
+use yii\helpers\Url;
 
 class TestController extends Controller
 {
@@ -40,9 +41,17 @@ class TestController extends Controller
     	$model = new TaskUser();
     	$result = $model->getUserTasks(1);	
 
+    	\Yii::setAlias('test', 'task/my');
+    	return Url::to('@test');
+    	
+    	return \Yii::getAlias('@app/web/index.php');
+    	
+    	var_dump(\Yii::$aliases); exit();
+    	
     	return $this->render('index', [
     			'result' => $result,
     	]);
+    
     	
     }
     

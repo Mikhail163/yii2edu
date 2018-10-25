@@ -69,6 +69,7 @@ class TaskUserController extends Controller
     {
     	$task = Task::findOne($taskId);
     	
+    	// Настраиваем параметры безопасности
     	if (!$task || $task->creator_id != Yii::$app->user->id) {
     		throw new ForbiddenHttpException();
     	}
@@ -76,22 +77,45 @@ class TaskUserController extends Controller
         $model = new TaskUser();
         $model->task_id = $taskId;
 
+        // После загрузки данных редеректим на страницу просмотра задач
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        	// Выводим сообщение что все ок
+        	Yii::$app->session->setFlash('success', 'Доступ предоставлен');
             return $this->redirect(['task/my']);
         }
         
+        // Достаем пользователей - у которых уже есть доступ к задаче $taskId
+        $usersOnTask = Task::getTaskUsersId($taskId);
+        
+        // Получаем пользователей - у которых нет доступа к задаче $taskId
         $users = User::find()
         	->select('username')
-        	->andWhere('not in', 'user_id',  Task::getTaskUsersId($taskId))
+        	->andWhere(['not in', 'user_id',  $usersOnTask])
         	->andWhere(['<>', 'user_id', Yii::$app->user->id])
         	->indexBy('user_id')
         	->column();
-    
-
+   
+        
         return $this->render('create', [
             'model' => $model,
         	'users' => $users,
         ]);
+    }
+    
+    public function actionUnshareAll($taskId)
+    {
+    	$task = Task::findOne($taskId);
+    	
+    	// Настраиваем параметры безопасности
+    	if (!$task || $task->creator_id != Yii::$app->user->id) {
+    		throw new ForbiddenHttpException();
+    	}
+    	
+    	$task->unlinkAll(Task::RELATION_SHARED_USERS, true);
+    	
+    	Yii::$app->session->setFlash('success', 'Доступ для всех пользователей удален');
+    	
+    	return $this->redirect(['task/shared']);
     }
 
     /**

@@ -33,6 +33,7 @@ class TaskController extends Controller
      * Lists all Task models.
      * @return mixed
      */
+    /*
     public function actionIndex()
     {
         $searchModel = new TaskSearch();
@@ -43,6 +44,7 @@ class TaskController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    */
     
     public function actionMy()
     {
@@ -54,6 +56,38 @@ class TaskController extends Controller
     	$query->byCreator(Yii::$app->user->id);
     	
     	return $this->render('my', [
+    			'searchModel' => $searchModel,
+    			'dataProvider' => $dataProvider,
+    	]);
+    }
+    
+    public function actionShared()
+    {
+    	$searchModel = new TaskSearch();
+    	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    	
+    	/** @var $query TaskQuery */
+    	$query = $dataProvider->query;
+    	$query->byCreator(Yii::$app->user->id)
+    		  ->innerJoinWith(Task::RELATION_TASK_USERS);
+    	
+    	return $this->render('shared', [
+    			'searchModel' => $searchModel,
+    			'dataProvider' => $dataProvider,
+    	]);
+    }
+    
+    public function actionAccessed()
+    {
+    	$searchModel = new TaskSearch();
+    	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    	
+    	/** @var $query TaskQuery */
+    	$query = $dataProvider->query;
+    	$query->innerJoinWith(Task::RELATION_TASK_USERS)
+    		  ->where(['user_id' => Yii::$app->user->id]);
+    	
+    	return $this->render('accessed', [
     			'searchModel' => $searchModel,
     			'dataProvider' => $dataProvider,
     	]);
@@ -81,14 +115,27 @@ class TaskController extends Controller
     {
         $model = new Task();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->task_id]);
+        if ($model->load(Yii::$app->request->post())) {
+        	
+        	$model->creator_id = Yii::$app->user->id;
+        	$model->created_at = time();
+        	$model->scenario = Task::SCENARIO_CREATE;
+        	
+        	if(!$model->save()) {
+        		print_r($model->errors);
+        		exit();
+        	}
+        	else
+            	return $this->redirect(['view', 'id' => $model->task_id]);
         }
 
+        
+        
         return $this->render('create', [
             'model' => $model,
         ]);
     }
+    
 
     /**
      * Updates an existing Task model.
@@ -102,13 +149,26 @@ class TaskController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->task_id]);
+        	
+        	$model->updater_id = Yii::$app->user->id;
+        	$model->updated_at = time();
+        	$model->scenario = Task::SCENARIO_UPDATE;
+        	
+        	if(!$model->save()) {
+        		print_r($model->errors);
+        		exit();
+        	}
+        	else
+        		return $this->redirect(['view', 'id' => $model->task_id]);
+        	
         }
 
         return $this->render('update', [
             'model' => $model,
         ]);
     }
+    
+    
 
     /**
      * Deletes an existing Task model.

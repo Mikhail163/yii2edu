@@ -18,6 +18,13 @@ class TaskQuery extends \yii\db\ActiveQuery
 	{
 		return $this->andWhere(['creator_id' => $userId]);
 	}
+	
+	public function shared($userId)
+	{
+		return $this->innerJoin(
+				'task_user',
+				"task.task_id = task_user.task_id AND task_user.user_id = {$userId}");
+	}
 
     /**
      * {@inheritdoc}

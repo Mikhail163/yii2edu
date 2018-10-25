@@ -39,11 +39,11 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
         	['label' => 'Test', 'url' => ['/test/index']],
         	['label' => 'Пользователи', 'url' => ['/user/index']],
-        	['label' => 'Задачи', 'url' => ['/task/index']],
+        	['label' => 'Расшаренные задачи', 'url' => ['/task/shared']],
+        	['label' => 'Созданные задачи', 'url' => ['/task/my']],
+        	['label' => 'Создать задачу', 'url' => ['/task/create']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (

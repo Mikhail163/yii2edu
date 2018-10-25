@@ -21,6 +21,10 @@ use Yii;
  */
 class Task extends \yii\db\ActiveRecord
 {
+	const SCENARIO_CREATE = 'create';
+	const SCENARIO_UPDATE = 'update';
+	const RELATION_TASK_USERS = 'taskUsers';
+	const RELATION_SHARED_USERS = 'sharedUsers';
     /**
      * {@inheritdoc}
      */
@@ -42,8 +46,10 @@ class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description', 'creator_id', 'created_at'], 'required'],
-            [['creator_id', 'updater_id', 'created_at', 'updated_at'], 'integer'],
+            [['title', 'description'], 'required'],
+        	[['created_at', 'creator_id'], 'required', 'on' => self::SCENARIO_CREATE],
+        	[['updated_at', 'updater_id'], 'required', 'on' => self::SCENARIO_UPDATE],
+        	[['creator_id', 'updater_id', 'created_at', 'created_at'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],
             [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['creator_id' => 'user_id']],
             [['updater_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updater_id' => 'user_id']],
@@ -90,25 +96,25 @@ class Task extends \yii\db\ActiveRecord
         return $this->hasMany(TaskUser::className(), ['task_id' => 'task_id']);
     }
     
+    /**
+     * Берем всех пользователей, которым открыт доступ к задачам
+     * @param {integer} $taskId
+     * @return {integer[]} массив id пользователей
+     */
     public static function getTaskUsersId($taskId)
     {
-    	$result = self::find()
+    	return  self::find()
 	    	->select('user_id')
 	    	->from('task_user')
 	    	->where(['=', 'task_id', $taskId])
-	    	->all();
+	    	->column();
     	
-	    $userId = [];
-	    
-	    
-	    foreach ($result as $u) {
-	    	echo '<br>';
-	    	var_dump($u);
-	    	//array_push($userId, $u['user_id']);
-	    }
-	    exit();	
-	    return $userId;
-    	
+    }
+   
+    public function getSharedUsers()
+    {
+    	return $this->hasMany(User::className(), ['user_id' => 'user_id'])
+    		->via(self::RELATION_TASK_USERS);
     }
 
     /**
