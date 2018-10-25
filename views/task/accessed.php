@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 /* @var $searchModel app\models\search\TaskSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Расшаренные задачи';
+$this->title = 'Cписок доступных чужих задач';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="task-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 	<p>
-		<?= Html::a('Create Task', ['create'], ['class' => 'btn btn-success']) ?>
+		<?php //Html::a('Create Task', ['create'], ['class' => 'btn btn-success']) ?>
 	</p>
 
 
