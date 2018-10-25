@@ -8,6 +8,7 @@ use app\models\search\TaskSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -101,8 +102,15 @@ class TaskController extends Controller
      */
     public function actionView($id)
     {
+    	
+    	$model = $this->findModel($id);
+    	$dp = new ActiveDataProvider([
+    			'query' => $model->getTaskUsers(),
+    	]);
+    	
         return $this->render('view', [
             'model' => $this->findModel($id),
+        	'dp' => $dp,
         ]);
     }
 

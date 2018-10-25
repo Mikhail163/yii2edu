@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Task */
@@ -37,5 +39,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at:datetime',
         ],
     ]) ?>
+
+	    <?= GridView::widget([
+        'dataProvider' => $dp,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+        	'user_id',
+            'task_id',
+            [
+            	'class' => 'yii\grid\ActionColumn',
+            	'template' => '{delete}',	
+            ],
+        ],
+    ]); ?>
 
 </div>
