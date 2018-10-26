@@ -54,6 +54,21 @@ $this->params['breadcrumbs'][] = $this->title;
             [
             	'class' => 'yii\grid\ActionColumn',
             	'template' => '{delete}',	
+            	'buttons' => [
+            		'delete' => function ($url,  app\models\TaskUser $model, $key) {
+            			return Html::a(
+            					'Удалить', 
+            					['task-user/delete', 
+            					'UserId'=>$model->user_id],
+            					[
+            							'data' => [
+            									'confirm' => 'Удалить доступ пользовтелю',
+            									'method' => 'post',
+            							]
+            					]
+            			);
+	    			}
+	    		],
             ],
         ],
     ]); ?>
