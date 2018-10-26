@@ -19,7 +19,7 @@ use Yii;
  * @property User $updater
  * @property TaskUser[] $taskUsers
  */
-class Task extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterface
+class Task extends \yii\db\ActiveRecord
 {
 	const SCENARIO_CREATE = 'create';
 	const SCENARIO_UPDATE = 'update';
