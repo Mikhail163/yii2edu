@@ -14,7 +14,7 @@ use Yii;
  * @property Task $task
  * @property User $user
  */
-class TaskUser extends \yii\db\ActiveRecord
+class TaskUser extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -84,4 +84,5 @@ class TaskUser extends \yii\db\ActiveRecord
     {
         return new TaskUserQuery(get_called_class());
     }
+    
 }
