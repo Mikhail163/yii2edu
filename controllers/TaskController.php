@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Task;
+use app\models\User;
+use app\models\TaskUser;
 use app\models\search\TaskSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -85,6 +87,9 @@ class TaskController extends Controller
     	
     	/** @var $query TaskQuery */
     	$query = $dataProvider->query;
+    	
+    	
+    	
     	$query->innerJoinWith(Task::RELATION_TASK_USERS)
     		  ->where(['user_id' => Yii::$app->user->id]);
     	
@@ -104,13 +109,22 @@ class TaskController extends Controller
     {
     	
     	$model = $this->findModel($id);
+    	
+    	$query = $model->getTaskUsers();
+    	
+    	$userTable = User::tableName();
+    	$taskUserTable = TaskUser::tableName();
+    	
+    	$query->innerJoinWith($userTable, ["{$userTable}.user_id" => "{$taskUserTable}.user_id"]);
+    	$query->select(["{$userTable}.user_id", "{$userTable}.username", "{$userTable}.name"]);
+    	
     	$dp = new ActiveDataProvider([
-    			'query' => $model->getTaskUsers(),
+    			'query' => $query,
     	]);
     	
         return $this->render('view', [
-            'model' => $this->findModel($id),
-        	'dp' => $dp,
+        		'model' => $model,
+        		'dp' => $dp,
         ]);
     }
 

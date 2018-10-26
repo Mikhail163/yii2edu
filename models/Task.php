@@ -96,6 +96,11 @@ class Task extends \yii\db\ActiveRecord
         return $this->hasMany(TaskUser::className(), ['task_id' => 'task_id']);
     }
     
+    public function getTaskUsersNames()
+    {
+    	return $this->hasMany(TaskUser::className(), ['task_id' => 'task_id']);
+    }
+    
     /**
      * Берем всех пользователей, которым открыт доступ к задачам
      * @param {integer} $taskId

@@ -40,12 +40,17 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+<p><b>Список пользователей - кому доступна задача</b></p>
+
 	    <?= GridView::widget([
         'dataProvider' => $dp,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
         	'user_id',
-            'task_id',
+        	[
+        		'label' => 'Логин',
+        		'value' => 'user.username',
+	    	],
             [
             	'class' => 'yii\grid\ActionColumn',
             	'template' => '{delete}',	
